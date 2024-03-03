@@ -170,8 +170,16 @@
                                 <label for="complemento">
                                     <p class="title">Complemento</p>
                                 </label>
-                                <input class="form-control" type="text" id="complemento" name="complemento"
+                                <% if (error.complemento) { %>
+                                <input class="form-control is-invalid" type="text" id="complemento" name="complemento"
                                     placeholder="Casa, Apto, Loja" aria-label="default input example">
+                                    <div class="invalid-feedback">
+                                        <%= error.complemento %>
+                                    </div>
+                                    <% } else { %>
+                                        <input class="form-control" type="text" id="complemento" name="complemento"
+                                    placeholder="Casa, Apto, Loja" aria-label="default input example" value="<%= dados ? dados.complemento : '' %>">
+                                        <% } %>
                             </div>
                         </div>
 
