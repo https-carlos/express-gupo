@@ -45,23 +45,28 @@ app.post('/validacao', (req, res) => {
     error = {}; // Limpa os erros para cada requisição
 
     // Validação do campo nome
-    if (dados.nome.length < 3) {
+    if (dados.nome.trim() === "" || dados.nome.length < 3) {
         error.nome = 'Por favor, insira um nome válido.';
     }
 
     // Validação do campo CPF
-    if (isNaN(dados.cpf) || dados.cpf.length < 11) {
+    if (dados.cpf.trim() === "" || isNaN(dados.cpf) || dados.cpf.length < 11) {
         error.cpf = 'Por favor, insira um CPF válido.';
     }
 
-    // Validação da data de nascimento
-    const dataAtual = new Date();
-    const dataNascimento = new Date(dados.data_nascimento);
+   // Validação da data de nascimento
+const dataAtual = new Date();
+const dataNascimento = new Date(dados.data_nascimento);
 
-    if (isNaN(dataNascimento) || dataNascimento >= dataAtual) {
-        error.data_nascimento = 'Por favor, insira uma data de nascimento válida.';
-    }
-
+if (isNaN(dataNascimento) || dataNascimento >= dataAtual) {
+    error.data_nascimento = 'Por favor, insira uma data de nascimento válida.';
+} else {
+    // Convertendo a data de nascimento para o formato "dd/mm/aaaa"
+    const dia = dataNascimento.getDate().toString().padStart(2, '0');
+    const mes = (dataNascimento.getMonth() + 1).toString().padStart(2, '0');
+    const ano = dataNascimento.getFullYear();
+    dados.data_nascimento_formatada = `${dia}/${mes}/${ano}`;
+}
     // Validação da renda mensal
     const regexRenda = /^\d+\.\d{2}$/;
     if (!regexRenda.test(dados.renda_mensal)) {
@@ -69,22 +74,26 @@ app.post('/validacao', (req, res) => {
     }
 
     // Validação do campo logradouro
-    if (dados.logradouro.length < 3) {
+    if (dados.logradouro.trim() === "" || dados.logradouro.length < 3) {
         error.logradouro = 'Por favor, insira um logradouro válido.';
     }
 
     // Validação do campo número
-    if (!Number.isInteger(parseFloat(dados.numero))) {
+    if (dados.numero.trim() === "" || !Number.isInteger(parseFloat(dados.numero))) {
         error.numero = 'Por favor, insira um número válido.';
     }
 
     // Validação do campo cidade
-    if (dados.cidade.length < 3) {
+    if (dados.cidade.trim() === "" || dados.cidade.length < 3) {
         error.cidade = 'Por favor, insira uma cidade válida.';
     }
 
+    if (dados.complemento.trim() === "") {
+        error.complemento = 'Por favor, insira um complemento válido.';
+    }
+
     // Se houver erros, renderiza a página de registro com os erros e dados
-    if (error.nome || error.cpf || error.data_nascimento || error.renda_mensal || error.logradouro || error.numero || error.cidade) {
+    if (error.nome || error.cpf || error.data_nascimento || error.renda_mensal || error.logradouro || error.numero || error.cidade || error.complemento) {
         return res.render('registro', { error, dados });
     }
 
@@ -92,7 +101,7 @@ app.post('/validacao', (req, res) => {
     else {
         id++;
         users.push({
-            id: id, nome: dados.nome, cpf: dados.cpf, data_nascimento: dados.data_nascimento, sexo: dados.sexo, estado_civil: dados.estado_civil, renda_mensal: dados.renda_mensal,
+            id: id, nome: dados.nome, cpf: dados.cpf, data_nascimento: dados.data_nascimento_formatada, sexo: dados.sexo, estado_civil: dados.estado_civil, renda_mensal: dados.renda_mensal,
             endereco: { logradouro: dados.logradouro, numero: dados.numero, complemento: dados.complemento, estado: dados.estado, cidade: dados.cidade }
         });
         console.log(users)
