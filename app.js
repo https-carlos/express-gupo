@@ -14,14 +14,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Configurando o middleware para servir arquivos estáticos da pasta 'public'
 app.use(express.static(__dirname + '/public'));
 
+var id = 1;
+var users = [{
+    id: id, nome: 'Isabela da Silva Santos', cpf: '123.456.789-01', data_nascimento: '15/08/1985', sexo: 'feminino', estado_civil: 'Solteira', renda_mensal: 3500.00,
+    endereco: { logradouro: 'Rua das Flores', numero: 123, complemento: 'Apartamento 302', estado: 'São Paulo', cidade: 'São Paulo' }
+}]
+
 // Rota GET para a página inicial
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { users: users, id: id });
 });
+
 
 // Inicializando um objeto de erro vazio
 var error = {};
-
 // Rota GET para a página de registro
 app.get('/registro', (req, res) => {
     var dados = {};
@@ -84,8 +90,23 @@ app.post('/validacao', (req, res) => {
 
     // Se não houver erros, renderiza a página de sucesso com os dados do formulário
     else {
+        id++;
+        users.push({
+            id: id, nome: dados.nome, cpf: dados.cpf, data_nascimento: dados.data_nascimento, sexo: dados.sexo, estado_civil: dados.estado_civil, renda_mensal: dados.renda_mensal,
+            endereco: { logradouro: dados.logradouro, numero: dados.numero, complemento: dados.complemento, estado: dados.estado, cidade: dados.cidade }
+        });
+        console.log(users)
         return res.render('sucesso', { dados: dados });
     }
+});
+
+app.post('/excluir/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    // Encontrar o índice do usuário no array com base no ID e quando encontrar deletar esse usuário
+    const userIndex = users.findIndex(user => user.id === userId);
+    users.splice(userIndex, 1);
+
+    res.redirect('/');
 });
 
 // Iniciando o servidor na porta 3000
