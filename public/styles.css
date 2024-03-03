@@ -1,0 +1,30 @@
+.container {
+    margin-top: 2%;
+}
+
+.btn.btn-outline-primary {
+    border-radius: 20px;
+    width: 100%;
+}
+
+.table-head {
+    background-color: aqua;
+}
+
+.table {
+    border: 2px solid #000000;
+    background-color: #f8f9fa;
+}
+
+/* Estilo para as células da tabela */
+.table td,
+.table th {
+    border: 1px solid #000000;
+    /* Adiciona uma borda às células da tabela */
+}
+
+/* Estilo para o cabeçalho da tabela */
+.table thead th {
+    background-color: #006eff;
+    color: #fff;
+}

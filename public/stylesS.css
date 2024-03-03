@@ -1,0 +1,32 @@
+.h1 {
+    width: 100vw;
+    height: 60vh;
+    background-color: rgb(0, 136, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+
+}
+
+#bnt1 {
+    border-radius: 60px;
+    width: 30%;
+    height: 80px;
+}
+
+.button {
+    margin-top: 5%;
+    text-align: center;
+}
+
+.alert.alert-success {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
