@@ -50,7 +50,7 @@ app.post('/validacao', (req, res) => {
     }
 
     // Validação do campo CPF
-    if (dados.cpf.trim() === "" || isNaN(dados.cpf) || dados.cpf.length < 11) {
+    if (dados.cpf.trim() === "" || isNaN(dados.cpf) || dados.cpf.length <= 11) {
         error.cpf = 'Por favor, insira um CPF válido.';
     }
 
